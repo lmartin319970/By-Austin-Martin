@@ -1,0 +1,10 @@
+---
+const { entry } = Astro.props;
+const d = entry.data;
+---
+<a class="article-card" href={`/writing/${entry.id}/`}>
+<div class="meta">{d.category} / {d.type}</div>
+<h3>{d.title}</h3>
+<p>{d.description}</p>
+<div class="bottom">{d.date.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})} <span aria-hidden="true">↗</span></div>
+</a>

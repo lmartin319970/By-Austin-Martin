@@ -1,0 +1,12 @@
+---
+import Base from '../../layouts/Base.astro';
+import {getCollection} from 'astro:content';
+const entries=(await getCollection('writing',({data})=>!data.draft&&data.portfolio)).sort((a,b)=>b.data.date.valueOf()-a.data.date.valueOf());
+const categories=['Film','Sports','Culture','Fiction','Local','Technology','Other'];
+const groups=categories.map(category=>({category,items:entries.filter(x=>x.data.category===category)})).filter(g=>g.items.length);
+---
+<Base title="Selected Work" description="Selected writing by Austin Martin, organized by subject.">
+<section class="container page-intro"><div class="eyebrow">The portfolio</div><h1>Selected work.</h1><p class="lede">A curated selection of writing, organized by subject. For the complete archive, visit <a class="text-link" href="/writing/">All Writing</a>.</p></section>
+<section class="container" style="padding-bottom:90px">
+{groups.length ? groups.map(group=><div class="subject"><div class="subject-head"><h2>{group.category}</h2><span class="meta">{group.items.length} {group.items.length===1?'piece':'pieces'}</span></div><div class="article-list">{group.items.map(entry=><a class="article-row" href={`/writing/${entry.id}/`}><div><div class="meta">{entry.data.type}</div><h3>{entry.data.title} ↗</h3><p>{entry.data.description}</p></div><span class="date">{entry.data.date.toLocaleDateString('en-US',{month:'short',year:'numeric'})}</span></a>)}</div></div>) : <p class="empty">Selected pieces will appear here when you mark them as portfolio items.</p>}
+</section></Base>

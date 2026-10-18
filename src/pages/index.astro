@@ -1,0 +1,25 @@
+---
+import Base from '../layouts/Base.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import { getCollection } from 'astro:content';
+const entries = (await getCollection('writing', ({data}) => !data.draft)).sort((a,b)=>b.data.date.valueOf()-a.data.date.valueOf());
+const featured = entries.filter(x=>x.data.featured).slice(0,3);
+const recent = featured.length ? featured : entries.slice(0,3);
+---
+<Base>
+<section class="hero container">
+<div class="eyebrow">Independent writing / Austin Martin</div>
+<h1>Curiosity, put <em>into words.</em></h1>
+<p class="lede">Essays, criticism, stories, and other writing. A home for whatever feels worth exploring.</p>
+<div class="actions"><a class="button" href="/writing/">Explore the writing ↗</a><a class="button secondary" href="/portfolio/">Selected work</a></div>
+</section>
+<section class="section tint"><div class="container">
+<div class="section-head"><h2>From the journal</h2><a href="/writing/">View all writing ↗</a></div>
+<div class="article-grid">{recent.map(entry=><ArticleCard entry={entry}/>)}</div>
+</div></section>
+<section class="section"><div class="container" style="max-width:850px">
+<div class="eyebrow">A note from the writer</div><h2>Not one subject. Just an interest in telling things well.</h2>
+<p class="lede">Film, sport, culture, fiction, and the occasional detour. This site is both an evolving journal and a collection of work I'm proud to share.</p>
+<a class="text-link" href="/about/">A little more about me ↗</a>
+</div></section>
+</Base>

@@ -1,0 +1,26 @@
+---
+import Base from '../../layouts/Base.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import {getCollection} from 'astro:content';
+const entries=(await getCollection('writing',({data})=>!data.draft)).sort((a,b)=>b.data.date.valueOf()-a.data.date.valueOf());
+const categories=['All','Film','Sports','Culture','Fiction','Local','Technology','Other'];
+---
+<Base title="Writing" description="All writing by Austin Martin, from essays and criticism to fiction.">
+<section class="container page-intro"><div class="eyebrow">The archive</div><h1>All writing.</h1><p class="lede">An ongoing collection of essays, observations, criticism, and stories. Browse everything or filter by subject.</p></section>
+<section class="container" style="padding-bottom:90px">
+<div class="filters" role="group" aria-label="Filter writing by subject">{categories.map((category,i)=><button type="button" class:list={['filter',{'active':i===0}]} data-filter={category} aria-pressed={i===0}>{category}</button>)}</div>
+<div class="article-grid" id="writing-grid">{entries.map(entry=><div data-category={entry.data.category}><ArticleCard entry={entry}/></div>)}</div>
+<p class="empty" id="no-results" hidden>No writing in this category yet.</p>
+</section>
+<script>
+const buttons=document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+const cards=document.querySelectorAll<HTMLElement>('#writing-grid [data-category]');
+const empty=document.querySelector<HTMLElement>('#no-results');
+buttons.forEach(button=>button.addEventListener('click',()=>{
+ const selected=button.dataset.filter;
+ buttons.forEach(b=>{const active=b===button;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));});
+ let count=0;cards.forEach(card=>{const show=selected==='All'||card.dataset.category===selected;card.hidden=!show;if(show)count++;});
+ if(empty)empty.hidden=count!==0;
+}));
+</script>
+</Base>

@@ -1,0 +1,24 @@
+---
+import '../styles/global.css';
+const { title = 'Austin Martin', description = 'Essays, criticism, stories, and other writing by Austin Martin.' } = Astro.props;
+const path = Astro.url.pathname;
+const links = [['/','Home'],['/writing/','Writing'],['/portfolio/','Selected Work'],['/about/','About'],['/contact/','Contact']];
+---
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content={description} />
+<meta name="theme-color" content="#fcfdf9" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<title>{title === 'Austin Martin' ? title : `${title} | Austin Martin`}</title>
+</head>
+<body>
+<header class="site-header"><div class="container header-inner">
+<a href="/" class="brand" aria-label="Austin Martin home">Austin Martin<span>.</span></a>
+<nav aria-label="Main navigation">{links.map(([href,label]) => <a href={href} aria-current={path === href ? 'page' : undefined}>{label}</a>)}</nav>
+</div></header>
+<main><slot /></main>
+<footer class="footer"><div class="container footer-inner"><span>© {new Date().getFullYear()} Austin Martin · Independent writing.</span><span><a href="/contact/">Get in touch</a> · <a href="/writing/">All writing</a></span></div></footer>
+</body></html>
