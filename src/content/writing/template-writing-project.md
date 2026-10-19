@@ -1,6 +1,6 @@
 ---
-title: "The Art of the Unlikable Protagonist"
-description: "What makes a difficult character worth following?"
+title: "What is [Blank] Movie Saying? Is it Succesful?"
+description: "This is a template for a broad question to ask during writing process."
 date: 2026-10-01
 category: Film
 type: Essay

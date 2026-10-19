@@ -1,0 +1,23 @@
+---
+import Base from '../layouts/Base.astro';
+import ArticleCard from './ArticleCard.astro';
+import { genreSlug, type Genre, type Section } from '../lib/genres';
+import { getSectionEntries } from '../lib/writing';
+interface Props { section: Section; genre: Genre }
+const { section, genre } = Astro.props;
+const portfolio = section === 'portfolio';
+const title = `${genre.name} ${portfolio ? 'Portfolio' : 'Writing'}`;
+const description = `${portfolio ? 'Writing samples and publication credits' : 'All website writing'} by Austin Martin in ${genre.name.toLowerCase()}. ${genre.description}`;
+const entries = (await getSectionEntries(section)).filter(entry => genreSlug(entry.data.category) === genre.slug);
+---
+<Base title={title} description={description}>
+  <section class="container page-intro">
+    <a class="back" href={`/${section}/`}>← {portfolio ? 'Portfolio' : 'Writing'}</a>
+    <h1>{title}</h1>
+    <p class="lede">{genre.description} {portfolio ? 'Explore writing samples and publication credits in this subject.' : 'Every published website piece in this subject, newest first.'}</p>
+  </section>
+  <section class="container" style="padding-bottom:90px" aria-label={`${genre.name} pieces`}>
+    <div class="article-grid">{entries.map(entry => <ArticleCard entry={entry} href={entry.href} />)}</div>
+    {!entries.length && <p class="empty">No {portfolio ? 'portfolio pieces' : 'writing'} in this genre yet.</p>}
+  </section>
+</Base>

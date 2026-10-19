@@ -1,0 +1,9 @@
+---
+import GenrePage from '../../components/GenrePage.astro';
+import { genres } from '../../lib/genres';
+export function getStaticPaths() {
+  return genres.map(genre => ({ params: { genre: genre.slug }, props: { genre } }));
+}
+const { genre } = Astro.props;
+---
+<GenrePage section="portfolio" genre={genre} />

@@ -1,10 +1,12 @@
 ---
-const { entry } = Astro.props;
+import { publicationCredit } from '../lib/writing';
+const { entry, href = `/writing/${entry.id}/` } = Astro.props;
 const d = entry.data;
 ---
-<a class="article-card" href={`/writing/${entry.id}/`}>
+<a class="article-card" href={href}>
 <div class="meta">{d.category} / {d.type}</div>
 <h3>{d.title}</h3>
 <p>{d.description}</p>
-<div class="bottom">{d.date.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})} <span aria-hidden="true">↗</span></div>
+<p class="publication-credit">{publicationCredit(d)}</p>
+<div class="bottom">{d.date.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric',timeZone:'UTC'})} <span aria-hidden="true">↗</span></div>
 </a>
